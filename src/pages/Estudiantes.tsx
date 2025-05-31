@@ -402,57 +402,7 @@ const Estudiantes: React.FC = () => {
                     </div>
                 </TabsContent>
 
-                <TabsContent value="tarjetas">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {filteredEstudiantes.length === 0 ? (
-                            <div className="col-span-full text-center py-10">
-                                <p>No se encontraron estudiantes</p>
-                            </div>
-                        ) : (
-                            filteredEstudiantes.map((estudiante: Estudiante) => (
-                                <Card key={estudiante.id}>
-                                    <CardHeader>
-                                        <CardTitle>
-                                            {estudiante.first_name} {estudiante.last_name}
-                                        </CardTitle>
-                                        <CardDescription>{estudiante.username}</CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className="text-sm">Email: {estudiante.email}</p>
-                                        <p className="text-sm mt-2">
-                                            Curso:{' '}
-                                            {estudiante.curso_detail ? (
-                                                <Badge variant="secondary">
-                                                    {estudiante.curso_detail.nombre}
-                                                </Badge>
-                                            ) : (
-                                                'No asignado'
-                                            )}
-                                        </p>
-                                    </CardContent>
-                                    <CardFooter className="flex justify-end space-x-2">
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => handleOpenEditDialog(estudiante)}
-                                        >
-                                            <Edit className="h-3 w-3 mr-1"/> Editar
-                                        </Button>
-                                        {isAdmin && (
-                                            <Button
-                                                variant="destructive"
-                                                size="sm"
-                                                onClick={() => handleDeleteEstudiante(estudiante.id)}
-                                            >
-                                                <Trash2 className="h-3 w-3 mr-1"/> Eliminar
-                                            </Button>
-                                        )}
-                                    </CardFooter>
-                                </Card>
-                            ))
-                        )}
-                    </div>
-                </TabsContent>
+                
             </Tabs>
 
             {/* Diálogo para crear/editar estudiante */}

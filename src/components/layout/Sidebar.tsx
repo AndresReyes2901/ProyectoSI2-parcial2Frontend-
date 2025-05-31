@@ -5,16 +5,17 @@ import { cn } from '@/lib/utils';
 import { 
   User, 
   Calendar, 
-  Grid2X2,
+  LayoutDashboard,
   ClipboardCheck,
-  ClipboardPlus,
-  ListCheck,
+  NotebookText,
+  CalendarCheck2,
   LogOut,
   BrainCircuit,
-  GraduationCap,
-  BookOpen,
+  UsersRound,
+  LibraryBig,
   BarChart,
-  BookOpenCheck
+  BookOpenCheck,
+  Brain
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -28,26 +29,26 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const location = useLocation();
 
   const estudianteNavItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: Grid2X2 },
+    { path: '/dashboard', label: 'Dashboard', icon: 	LayoutDashboard },
   ];
 
   const profesorNavItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: Grid2X2 },
-    { path: '/notas', label: 'Registro de Notas', icon: ClipboardPlus },
-    { path: '/asistencias', label: 'Asistencias', icon: ListCheck },
+    { path: '/dashboard', label: 'Dashboard', icon: 	LayoutDashboard },
+    { path: '/notas', label: 'Registro de Notas', icon: NotebookText },
+    { path: '/asistencias', label: 'Asistencias', icon: CalendarCheck2 },
     { path: '/participaciones', label: 'Participaciones', icon: ClipboardCheck },
-    { path: '/prediccion-rendimiento', label: 'Predicciones IA', icon: BrainCircuit },
+    { path: '/prediccion-rendimiento', label: 'Predicciones IA', icon: Brain },
   ];
 
   const administrativoNavItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: Grid2X2 },
-    { path: '/estudiantes', label: 'Estudiantes', icon: GraduationCap },
-    { path: '/materias', label: 'Materias', icon: BookOpen },
+    { path: '/dashboard', label: 'Dashboard', icon: 	LayoutDashboard },
+    { path: '/estudiantes', label: 'Estudiantes', icon: UsersRound },
+    { path: '/materias', label: 'Materias', icon: LibraryBig },
     { path: '/cursos', label: 'Cursos', icon: Calendar },
-    { path: '/asistencias', label: 'Asistencias', icon: ListCheck },
+    { path: '/asistencias', label: 'Asistencias', icon: CalendarCheck2 },
     { path: '/participaciones', label: 'Participaciones', icon: ClipboardCheck },
-    { path: '/notas', label: 'Registro de Notas', icon: ClipboardPlus },
-    { path: '/prediccion-rendimiento', label: 'Predicciones IA', icon: BrainCircuit },
+    { path: '/notas', label: 'Registro de Notas', icon: NotebookText },
+    { path: '/prediccion-rendimiento', label: 'Predicciones IA', icon: Brain },
   ];
 
   // Seleccionar el menú adecuado según el rol del usuario
@@ -75,7 +76,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
               </div>
               <div>
                 <h1 className="text-sidebar-foreground font-bold text-lg">Aula Inteligente</h1>
-                <p className="text-sidebar-foreground/70 text-xs">Sistema Académico</p>
               </div>
             </div>
           )}
@@ -85,29 +85,30 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             onClick={onToggle}
             className="text-sidebar-foreground hover:bg-sidebar-accent"
           >
-            <Grid2X2 className="h-4 w-4" />
+            <	LayoutDashboard className="h-4 w-4" />
           </Button>
         </div>
       </div>
 
-      {/* User Info */}
-      {!isCollapsed && user && (
-        <div className="p-4 border-b border-sidebar-border">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-sidebar-accent rounded-full flex items-center justify-center">
-              <User className="h-5 w-5 text-sidebar-foreground" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sidebar-foreground font-medium text-sm truncate">
-                {user.first_name} {user.last_name}
-              </p>
-              <p className="text-sidebar-foreground/70 text-xs truncate">
-                {user.role}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
+{/* User Info */}
+{!isCollapsed && user && (
+  <div className="p-4 border-b border-sidebar-border">
+    <div className="flex flex-col items-center space-y-2 text-center">
+      <div className="w-12 h-12 bg-sidebar-accent rounded-full flex items-center justify-center">
+        <User className="h-6 w-6 text-sidebar-foreground" />
+      </div>
+      <div className="flex flex-col items-center">
+        <p className="text-sidebar-foreground font-medium text-sm truncate">
+          {user.first_name} {user.last_name}
+        </p>
+        <p className="text-sidebar-foreground/70 text-xs truncate">
+          {user.role}
+        </p>
+      </div>
+    </div>
+  </div>
+)}
+
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-2">
@@ -136,20 +137,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
         })}
       </nav>
 
-      {/* Logout */}
-      <div className="p-4 border-t border-sidebar-border">
-        <Button
-          variant="ghost"
-          onClick={logout}
-          className={cn(
-            "w-full text-sidebar-foreground hover:bg-sidebar-accent justify-start",
-            isCollapsed && "justify-center px-2"
-          )}
-        >
-          <LogOut className="h-5 w-5" />
-          {!isCollapsed && <span className="ml-3">Cerrar Sesión</span>}
-        </Button>
-      </div>
+      
     </div>
   );
 };

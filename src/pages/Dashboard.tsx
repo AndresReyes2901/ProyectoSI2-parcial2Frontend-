@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import api from '@/services/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { User, Calendar, ClipboardCheck, Grid2X2, AlertCircle, Award, BookOpen, Users, CheckSquare } from 'lucide-react';
+import { UsersRound, CalendarCheck2, ClipboardCheck, Grid2X2, AlertCircle, Award, BookOpen, Users, CheckSquare,LibraryBig,FileText } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend } from 'recharts';
 import { DashboardStats, EstudianteDashboard } from '@/types/academic';
 import { toast } from '@/components/ui/use-toast';
@@ -220,32 +220,7 @@ const Dashboard: React.FC = () => {
 
     return (
       <div className="space-y-6 animate-fade-in">
-        {/* Welcome Section */}
-        <div className="bg-gradient-academic rounded-xl p-6 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">
-                ¡Bienvenido/a, {user?.first_name || estudianteDashboard.estudiante.nombre_completo.split(' ')[0]}!
-              </h1>
-              <p className="text-white/90 text-lg">
-                Panel académico de estudiante
-              </p>
-            </div>
-            <div className="text-right">
-              <Badge variant="secondary" className="bg-white/20 text-white border-white/30 mb-2">
-                ESTUDIANTE
-              </Badge>
-              <p className="text-white/80 text-sm">
-                {new Date().toLocaleDateString('es-ES', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </p>
-            </div>
-          </div>
-        </div>
+     
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -613,102 +588,132 @@ const Dashboard: React.FC = () => {
   // Dashboard para administradores y profesores (el que ya tenías)
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Welcome Section */}
-      <div className="bg-gradient-academic rounded-xl p-6 text-white">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">
-              ¡Bienvenido/a, {user?.first_name}!
-            </h1>
-            <p className="text-white/90 text-lg">
-              {user?.role === 'ADMINISTRATIVO'
-                ? 'Panel de administración del sistema académico'
-                : 'Dashboard de gestión académica'
-              }
-            </p>
-          </div>
-          <div className="text-right">
-            <Badge variant="secondary" className="bg-white/20 text-white border-white/30 mb-2">
-              {user?.role}
-            </Badge>
-            <p className="text-white/80 text-sm">
-              {new Date().toLocaleDateString('es-ES', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}
-            </p>
-          </div>
-        </div>
-      </div>
+     
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="bg-white shadow-sm hover:shadow-md transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Total Estudiantes
-            </CardTitle>
-            <User className="h-5 w-5 text-academic-blue" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-gray-900">{stats?.total_estudiantes ?? 0}</div>
-            <p className="text-xs text-gray-500 mt-1">
-              Estudiantes activos
-            </p>
-          </CardContent>
-        </Card>
+       <Card className="relative bg-gradient-to-r from-green-600 to-green-400 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden">
+  {/* Ícono decorativo de fondo */}
+  <UsersRound className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
 
-        <Card className="bg-white shadow-sm hover:shadow-md transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Materias
-            </CardTitle>
-            <Calendar className="h-5 w-5 text-academic-green" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-gray-900">{stats?.total_materias ?? 0}</div>
-            <p className="text-xs text-gray-500 mt-1">
-              Materias registradas
-            </p>
-          </CardContent>
-        </Card>
+  <CardHeader className="pb-2 z-10 relative">
+    <CardTitle className="text-sm font-medium text-white/80">
+      Total Estudiantes
+    </CardTitle>
+  </CardHeader>
 
-        <Card className="bg-white shadow-sm hover:shadow-md transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Promedio General
-            </CardTitle>
-            <ClipboardCheck className="h-5 w-5 text-academic-purple" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-gray-900">
-              {(stats?.promedio_general ?? 0).toFixed(1)}
-            </div>
-            <p className="text-xs text-gray-500 mt-1">
-              Calificación promedio
-            </p>
-          </CardContent>
-        </Card>
+  <CardContent className="z-10 relative">
+    <div className="text-3xl font-bold text-white">
+      {stats?.total_estudiantes ?? 0}
+    </div>
+    <p className="text-xs text-white/80 mt-1">
+      Estudiantes activos
+    </p>
+  </CardContent>
+</Card>
 
-        <Card className="bg-white shadow-sm hover:shadow-md transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Asistencia
-            </CardTitle>
-            <Grid2X2 className="h-5 w-5 text-academic-orange" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-gray-900">
-              {(stats?.asistencia_promedio ?? 0).toFixed(1)}%
-            </div>
-            <p className="text-xs text-gray-500 mt-1">
-              Promedio de asistencia
-            </p>
-          </CardContent>
-        </Card>
+
+       <Card className="relative bg-gradient-to-r from-pink-400 to-pink-600 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden">
+  {/* Ícono decorativo de fondo */}
+  <LibraryBig className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
+
+  <CardHeader className="pb-2 z-10 relative">
+    <CardTitle className="text-sm font-medium text-white/80">
+      Materias
+    </CardTitle>
+  </CardHeader>
+
+  <CardContent className="z-10 relative">
+    <div className="text-3xl font-bold text-white">
+      {stats?.total_materias ?? 0}
+    </div>
+    <p className="text-xs text-white/80 mt-1">
+      Materias registradas
+    </p>
+  </CardContent>
+</Card>
+
+
+  <Card className="relative bg-gradient-to-r from-yellow-400 to-amber-600 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden">
+  {/* Ícono grande decorativo al fondo */}
+  <FileText className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
+
+  <CardHeader className="pb-2 z-10 relative">
+    <CardTitle className="text-sm font-medium text-white/80">
+      Promedio General
+    </CardTitle>
+  </CardHeader>
+
+  <CardContent className="z-10 relative">
+    <div className="text-3xl font-bold text-white">
+      {(stats?.promedio_general ?? 0).toFixed(1)}
+    </div>
+    <p className="text-xs text-white/80 mt-1">
+      Calificación promedio
+    </p>
+  </CardContent>
+</Card>
+
+<Card className="relative bg-gradient-to-r from-blue-400 to-blue-600 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden">
+  {/* Ícono decorativo grande */}
+  <CalendarCheck2 className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
+
+  <CardHeader className="pb-2 z-10 relative">
+    <CardTitle className="text-sm font-medium text-white/80">
+      Asistencia
+    </CardTitle>
+  </CardHeader>
+
+  <CardContent className="z-10 relative">
+    <div className="text-3xl font-bold text-white">
+      {(stats?.asistencia_promedio ?? 0).toFixed(1)}%
+    </div>
+    <p className="text-xs text-white/80 mt-1">
+      Promedio de asistencia
+    </p>
+  </CardContent>
+</Card>
+
+       
       </div>
+
+      {/* Materias y Promedios */}
+      {materiasData.length > 0 && (
+        <Card className="bg-white shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold text-gray-900">
+              Estadísticas por Materia
+            </CardTitle>
+            <CardDescription>
+              Promedio de notas por materia
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={materiasData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis dataKey="materia" stroke="#666" />
+                <YAxis stroke="#666" domain={[0, 100]} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: 'white',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                  }}
+                  formatter={(value) => [`${Number(value).toFixed(1)}`, 'Promedio']}
+                />
+                <Bar
+                  dataKey="promedio"
+                  fill="#059669"
+                  radius={[4, 4, 0, 0]}
+                  name="Promedio"
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -837,43 +842,7 @@ const Dashboard: React.FC = () => {
         </Card>
       )}
 
-      {/* Materias y Promedios */}
-      {materiasData.length > 0 && (
-        <Card className="bg-white shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-900">
-              Estadísticas por Materia
-            </CardTitle>
-            <CardDescription>
-              Promedio de notas por materia
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={materiasData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="materia" stroke="#666" />
-                <YAxis stroke="#666" domain={[0, 100]} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'white',
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                  }}
-                  formatter={(value) => [`${Number(value).toFixed(1)}`, 'Promedio']}
-                />
-                <Bar
-                  dataKey="promedio"
-                  fill="#059669"
-                  radius={[4, 4, 0, 0]}
-                  name="Promedio"
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      )}
+      
     </div>
   );
 };

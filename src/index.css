@@ -35,14 +35,19 @@
 
     --radius: 0.5rem;
 
-    --sidebar-background: 217.2 32.6% 17.5%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 217.2 91.2% 59.8%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 217.2 32.6% 25.5%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 217.2 32.6% 20.5%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+
+--sidebar-background: 152 44% 53%;          /* Morado medio como fondo del sidebar */
+--sidebar-foreground: 262 30% 15%;          /* Texto oscuro para buen contraste */
+--sidebar-primary: 262 45% 55%;             /* Morado un poco más fuerte para botones primarios */
+--sidebar-primary-foreground: 0 0% 100%;    /* Texto blanco en botones */
+--sidebar-accent: 0 0% 100%;                /* Hover: blanco */
+--sidebar-accent-foreground: 262 30% 20%;   /* Texto oscuro sobre blanco */
+--sidebar-border: 262 30% 65%;              /* Borde ligeramente más oscuro que fondo */
+--sidebar-ring: 262 45% 55%;
+
+
+
+
   }
 
   .dark {

@@ -325,58 +325,7 @@ const Materias: React.FC = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="tarjetas">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredMaterias.length === 0 ? (
-              <div className="col-span-full text-center py-10">
-                <p>No se encontraron materias</p>
-              </div>
-            ) : (
-              filteredMaterias.map((materia: Materia) => (
-                <Card key={materia.id}>
-                  <CardHeader className="pb-2">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle>{materia.nombre}</CardTitle>
-                        <CardDescription>{materia.codigo}</CardDescription>
-                      </div>
-                      <Badge variant="outline">{materia.profesor_detail ? "Con profesor" : "Sin profesor"}</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    {materia.descripcion ? (
-                      <p className="text-sm text-muted-foreground">{materia.descripcion}</p>
-                    ) : (
-                      <p className="text-sm text-muted-foreground italic">Sin descripción</p>
-                    )}
-                    <div className="mt-4">
-                      <p className="text-sm font-semibold">Créditos:</p>
-                      <p className="text-sm">{materia.creditos}</p>
-                    </div>
-                    <div className="mt-4">
-                      <p className="text-sm font-semibold">Profesor:</p>
-                      <p className="text-sm">
-                        {materia.profesor_detail ? (
-                          `${materia.profesor_detail.first_name} ${materia.profesor_detail.last_name}`
-                        ) : "No asignado"}
-                      </p>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex justify-end space-x-2">
-                    <Button variant="outline" size="sm" onClick={() => handleOpenEditDialog(materia)}>
-                      <Edit className="h-3 w-3 mr-1" /> Editar
-                    </Button>
-                    {isAdmin && (
-                      <Button variant="destructive" size="sm" onClick={() => handleDeleteMateria(materia.id)}>
-                        <Trash2 className="h-3 w-3 mr-1" /> Eliminar
-                      </Button>
-                    )}
-                  </CardFooter>
-                </Card>
-              ))
-            )}
-          </div>
-        </TabsContent>
+        
       </Tabs>
 
       {/* Diálogo para crear/editar materia */}
