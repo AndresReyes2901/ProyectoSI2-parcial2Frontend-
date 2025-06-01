@@ -224,69 +224,88 @@ const Dashboard: React.FC = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="bg-white shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
-                Promedio General
-              </CardTitle>
-              <Award className="h-5 w-5 text-academic-blue" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-900">{promedioGeneral.toFixed(1)}</div>
-              <p className="text-xs text-gray-500 mt-1">
-                Calificación promedio general
-              </p>
-            </CardContent>
-          </Card>
+          <Card className="relative bg-gradient-to-r from-blue-600 to-blue-400 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden">
+  {/* Ícono decorativo de fondo */}
+  <Award className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
 
-          <Card className="bg-white shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
-                Materias
-              </CardTitle>
-              <BookOpen className="h-5 w-5 text-academic-green" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-900">{estudianteDashboard.notas.length}</div>
-              <p className="text-xs text-gray-500 mt-1">
-                Materias cursadas
-              </p>
-            </CardContent>
-          </Card>
+  <CardHeader className="pb-2 z-10 relative">
+    <CardTitle className="text-sm font-medium text-white/80">
+      Promedio General
+    </CardTitle>
+  </CardHeader>
 
-          <Card className="bg-white shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
-                Asistencia
-              </CardTitle>
-              <CheckSquare className="h-5 w-5 text-academic-purple" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-900">
-                {asistenciaPromedio.toFixed(1)}%
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Porcentaje de asistencia
-              </p>
-            </CardContent>
-          </Card>
+  <CardContent className="z-10 relative">
+    <div className="text-3xl font-bold text-white">
+      {promedioGeneral.toFixed(1)}
+    </div>
+    <p className="text-xs text-white/80 mt-1">
+      Calificación promedio general
+    </p>
+  </CardContent>
+</Card>
 
-          <Card className="bg-white shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
-                Participaciones
-              </CardTitle>
-              <Users className="h-5 w-5 text-academic-orange" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-900">
-                {totalParticipaciones}
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Total de participaciones
-              </p>
-            </CardContent>
-          </Card>
+<Card className="relative bg-gradient-to-r from-pink-400 to-pink-600 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden">
+  {/* Ícono decorativo de fondo */}
+  <LibraryBig className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
+
+  <CardHeader className="pb-2 z-10 relative">
+    <CardTitle className="text-sm font-medium text-white/80">
+      Materias
+    </CardTitle>
+  </CardHeader>
+
+  <CardContent className="z-10 relative">
+    <div className="text-3xl font-bold text-white">
+      {estudianteDashboard.notas.length}
+    </div>
+    <p className="text-xs text-white/80 mt-1">
+      Materias cursadas
+    </p>
+  </CardContent>
+</Card>
+
+<Card className="relative bg-gradient-to-r from-purple-500 to-indigo-600 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden">
+  {/* Ícono decorativo de fondo */}
+  <CalendarCheck2 className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
+
+  <CardHeader className="pb-2 z-10 relative">
+    <CardTitle className="text-sm font-medium text-white/80">
+      Asistencia
+    </CardTitle>
+  </CardHeader>
+
+  <CardContent className="z-10 relative">
+    <div className="text-3xl font-bold text-white">
+      {asistenciaPromedio.toFixed(1)}%
+    </div>
+    <p className="text-xs text-white/80 mt-1">
+      Porcentaje de asistencia
+    </p>
+  </CardContent>
+</Card>
+
+
+<Card className="relative bg-gradient-to-r from-orange-400 to-red-500 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden">
+  {/* Ícono decorativo de fondo */}
+  <ClipboardCheck className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
+
+  <CardHeader className="pb-2 z-10 relative">
+    <CardTitle className="text-sm font-medium text-white/80">
+      Participaciones
+    </CardTitle>
+  </CardHeader>
+
+  <CardContent className="z-10 relative">
+    <div className="text-3xl font-bold text-white">
+      {totalParticipaciones}
+    </div>
+    <p className="text-xs text-white/80 mt-1">
+      Total de participaciones
+    </p>
+  </CardContent>
+</Card>
+
+
         </div>
 
         {/* Notas por Materia y Componentes */}
@@ -689,28 +708,36 @@ const Dashboard: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={materiasData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="materia" stroke="#666" />
-                <YAxis stroke="#666" domain={[0, 100]} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'white',
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                  }}
-                  formatter={(value) => [`${Number(value).toFixed(1)}`, 'Promedio']}
-                />
-                <Bar
-                  dataKey="promedio"
-                  fill="#059669"
-                  radius={[4, 4, 0, 0]}
-                  name="Promedio"
-                />
-              </BarChart>
-            </ResponsiveContainer>
+           <ResponsiveContainer width="100%" height={300}>
+  <BarChart data={materiasData}>
+    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+    <XAxis
+      dataKey="materia"
+      stroke="#666"
+      angle={-45}          // Rotar etiquetas diagonalmente
+      textAnchor="end"     // Anclar texto al final para mejor alineación
+      interval={0}         // Mostrar todas las etiquetas sin saltos
+      height={60}          // Ajustar altura para que quepan etiquetas rotadas
+    />
+    <YAxis stroke="#666" domain={[0, 100]} />
+    <Tooltip
+      contentStyle={{
+        backgroundColor: 'white',
+        border: '1px solid #e2e8f0',
+        borderRadius: '8px',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+      }}
+      formatter={(value) => [`${Number(value).toFixed(1)}`, 'Promedio']}
+    />
+    <Bar
+      dataKey="promedio"
+      fill="#3b82f6"
+      radius={[4, 4, 0, 0]}
+      name="Promedio"
+    />
+  </BarChart>
+</ResponsiveContainer>
+
           </CardContent>
         </Card>
       )}

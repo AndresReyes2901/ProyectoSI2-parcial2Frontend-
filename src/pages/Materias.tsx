@@ -268,13 +268,7 @@ const Materias: React.FC = () => {
         />
       </div>
 
-      <Tabs defaultValue="tabla" className="w-full">
-        <TabsList className="mb-4">
-          <TabsTrigger value="tabla">Vista de Tabla</TabsTrigger>
-          <TabsTrigger value="tarjetas">Vista de Tarjetas</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="tabla">
+    
           <div className="rounded-md border">
             <Table>
               <TableCaption>Lista de materias registradas</TableCaption>
@@ -323,10 +317,7 @@ const Materias: React.FC = () => {
               </TableBody>
             </Table>
           </div>
-        </TabsContent>
-
-        
-      </Tabs>
+      
 
       {/* Diálogo para crear/editar materia */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

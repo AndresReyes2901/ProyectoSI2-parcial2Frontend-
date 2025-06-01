@@ -336,14 +336,8 @@ const Estudiantes: React.FC = () => {
                 </Select>
             </div>
 
-            {/* Pestañas: Tabla / Tarjetas */}
-            <Tabs defaultValue="tabla" className="w-full">
-                <TabsList className="mb-4">
-                    <TabsTrigger value="tabla">Vista de Tabla</TabsTrigger>
-                    <TabsTrigger value="tarjetas">Vista de Tarjetas</TabsTrigger>
-                </TabsList>
+          
 
-                <TabsContent value="tabla">
                     <div className="rounded-md border">
                         <Table>
                             <TableCaption>Lista de estudiantes registrados</TableCaption>
@@ -400,10 +394,7 @@ const Estudiantes: React.FC = () => {
                             </TableBody>
                         </Table>
                     </div>
-                </TabsContent>
-
-                
-            </Tabs>
+         
 
             {/* Diálogo para crear/editar estudiante */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
