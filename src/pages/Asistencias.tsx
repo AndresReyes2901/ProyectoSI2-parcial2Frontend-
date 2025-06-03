@@ -386,48 +386,49 @@ const Asistencias: React.FC = () => {
                   <Loader2 className="h-6 w-6 animate-spin text-academic-purple"/>
                 </div>
               )}
-              <Table>
-                <TableCaption>
-                  Lista de estudiantes para registrar asistencia
-                </TableCaption>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Estudiante</TableHead>
-                    <TableHead className="text-center">Estado</TableHead>
-                    <TableHead className="text-center">Asistencia</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {estudiantes.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={3} className="text-center py-4">
-                        No hay estudiantes registrados
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    estudiantes.map((estudiante: Estudiante) => (
-                      <TableRow key={estudiante.id}>
-                        <TableCell className="font-medium">
-                          {estudiante.first_name} {estudiante.last_name}
-                        </TableCell>
-                        <TableCell className="text-center">
-                          {asistencias[estudiante.id] ? (
-                            <Badge className="bg-green-600">Presente</Badge>
-                          ) : (
-                            <Badge variant="destructive">Ausente</Badge>
-                          )}
-                        </TableCell>
-                        <TableCell className="text-center">
-                          <Checkbox
-                            checked={asistencias[estudiante.id]}
-                            onCheckedChange={() => handleToggleAsistencia(estudiante.id)}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
+             <Table>
+  <TableCaption>
+    Lista de estudiantes para registrar asistencia
+  </TableCaption>
+  <TableHeader className="bg-black text-white border-b border-gray-700">
+    <TableRow>
+      <TableHead className="text-white">Estudiante</TableHead>
+      <TableHead className="text-center text-white">Estado</TableHead>
+      <TableHead className="text-center text-white">Asistencia</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {estudiantes.length === 0 ? (
+      <TableRow>
+        <TableCell colSpan={3} className="text-center py-4">
+          No hay estudiantes registrados
+        </TableCell>
+      </TableRow>
+    ) : (
+      estudiantes.map((estudiante: Estudiante) => (
+        <TableRow key={estudiante.id} className="even:bg-gray-50">
+          <TableCell className="font-medium border-b border-gray-200">
+            {estudiante.first_name} {estudiante.last_name}
+          </TableCell>
+          <TableCell className="text-center border-b border-gray-200">
+            {asistencias[estudiante.id] ? (
+              <Badge className="bg-green-600">Presente</Badge>
+            ) : (
+              <Badge variant="destructive">Ausente</Badge>
+            )}
+          </TableCell>
+          <TableCell className="text-center border-b border-gray-200">
+            <Checkbox
+              checked={asistencias[estudiante.id]}
+              onCheckedChange={() => handleToggleAsistencia(estudiante.id)}
+            />
+          </TableCell>
+        </TableRow>
+      ))
+    )}
+  </TableBody>
+</Table>
+
             </div>
 
             {/* Paginación */}
