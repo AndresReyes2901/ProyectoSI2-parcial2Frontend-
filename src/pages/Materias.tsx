@@ -250,7 +250,7 @@ const Materias: React.FC = () => {
   return (
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Gestión de Materias</h1>
+       
         {isAdmin && (
           <Button onClick={handleOpenCreateDialog}>
             <Plus className="mr-2 h-4 w-4" /> Nueva Materia
@@ -269,54 +269,73 @@ const Materias: React.FC = () => {
       </div>
 
     
-          <div className="rounded-md border">
-            <Table>
-              <TableCaption>Lista de materias registradas</TableCaption>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Código</TableHead>
-                  <TableHead>Nombre</TableHead>
-                  <TableHead>Descripción</TableHead>
-                  <TableHead>Créditos</TableHead>
-                  <TableHead>Profesor</TableHead>
-                  <TableHead className="text-right">Acciones</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredMaterias.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={6} className="text-center py-4">
-                      No se encontraron materias
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  filteredMaterias.map((materia: Materia) => (
-                    <TableRow key={materia.id}>
-                      <TableCell>{materia.codigo}</TableCell>
-                      <TableCell className="font-medium">{materia.nombre}</TableCell>
-                      <TableCell className="max-w-xs truncate">{materia.descripcion || "-"}</TableCell>
-                      <TableCell>{materia.creditos}</TableCell>
-                      <TableCell>
-                        {materia.profesor_detail ? (
-                          `${materia.profesor_detail.first_name} ${materia.profesor_detail.last_name}`
-                        ) : "No asignado"}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="icon" onClick={() => handleOpenEditDialog(materia)}>
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        {isAdmin && (
-                          <Button variant="ghost" size="icon" onClick={() => handleDeleteMateria(materia.id)}>
-                            <Trash2 className="h-4 w-4 text-red-500" />
-                          </Button>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </div>
+       <div className="rounded-xl border shadow-sm overflow-hidden">
+ <Table>
+  <TableCaption className="text-muted-foreground">
+    Lista de materias registradas
+  </TableCaption>
+  <TableHeader className="bg-black">
+    <TableRow>
+      <TableHead className="font-semibold text-white uppercase tracking-wide">Código</TableHead>
+      <TableHead className="font-semibold text-white uppercase tracking-wide">Nombre</TableHead>
+      <TableHead className="font-semibold text-white uppercase tracking-wide">Descripción</TableHead>
+      <TableHead className="font-semibold text-white uppercase tracking-wide">Créditos</TableHead>
+      <TableHead className="font-semibold text-white uppercase tracking-wide">Profesor</TableHead>
+      <TableHead className="font-semibold text-white uppercase tracking-wide text-right">Acciones</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {filteredMaterias.length === 0 ? (
+      <TableRow>
+        <TableCell colSpan={6} className="text-center py-6 text-muted-foreground italic">
+          No se encontraron materias
+        </TableCell>
+      </TableRow>
+    ) : (
+      filteredMaterias.map((materia: Materia, index: number) => (
+        <TableRow
+          key={materia.id}
+          className={`hover:bg-gray-100 transition ${
+            index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+          }`}
+        >
+          <TableCell className="font-mono text-sm text-gray-700">{materia.codigo}</TableCell>
+          <TableCell className="font-semibold text-gray-900">{materia.nombre}</TableCell>
+          <TableCell className="max-w-xs truncate text-gray-600">
+            {materia.descripcion || (
+              <span className="italic text-muted-foreground">-</span>
+            )}
+          </TableCell>
+          <TableCell className="text-center text-gray-700 font-medium">{materia.creditos}</TableCell>
+          <TableCell className="text-gray-800">
+            {materia.profesor_detail ? (
+              `${materia.profesor_detail.first_name} ${materia.profesor_detail.last_name}`
+            ) : (
+              <span className="italic text-muted-foreground">No asignado</span>
+            )}
+          </TableCell>
+          <TableCell className="text-right space-x-2">
+            <button
+              onClick={() => handleOpenEditDialog(materia)}
+              className="px-3 py-1 text-sm font-medium bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+            >
+              Editar
+            </button>
+            {isAdmin && (
+              <button
+                onClick={() => handleDeleteMateria(materia.id)}
+                className="px-3 py-1 text-sm font-medium bg-red-600 text-white rounded hover:bg-red-700 transition"
+              >
+                Eliminar
+              </button>
+            )}
+          </TableCell>
+        </TableRow>
+      ))
+    )}
+  </TableBody>
+</Table>
+</div>
       
 
       {/* Diálogo para crear/editar materia */}

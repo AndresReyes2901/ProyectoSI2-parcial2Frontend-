@@ -301,7 +301,7 @@ const Estudiantes: React.FC = () => {
         <div className="p-6 space-y-6">
             {/* Encabezado */}
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold">Gestión de Estudiantes</h1>
+              
                 {isAdmin && (
                     <Button onClick={handleOpenCreateDialog}>
                         <UserPlus className="mr-2 h-4 w-4"/> Nuevo Estudiante
@@ -338,62 +338,71 @@ const Estudiantes: React.FC = () => {
 
           
 
-                    <div className="rounded-md border">
-                        <Table>
-                            <TableCaption>Lista de estudiantes registrados</TableCaption>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>ID</TableHead>
-                                    <TableHead>Nombre</TableHead>
-                                    <TableHead>Usuario</TableHead>
-                                    <TableHead>Email</TableHead>
-                                    <TableHead>Curso</TableHead>
-                                    <TableHead className="text-right">Acciones</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {filteredEstudiantes.length === 0 ? (
-                                    <TableRow>
-                                        <TableCell colSpan={6} className="text-center py-4">
-                                            No se encontraron estudiantes
-                                        </TableCell>
-                                    </TableRow>
-                                ) : (
-                                    filteredEstudiantes.map((estudiante: Estudiante) => (
-                                        <TableRow key={estudiante.id}>
-                                            <TableCell>{estudiante.id}</TableCell>
-                                            <TableCell>
-                                                {estudiante.first_name} {estudiante.last_name}
-                                            </TableCell>
-                                            <TableCell>{estudiante.username}</TableCell>
-                                            <TableCell>{estudiante.email}</TableCell>
-                                            <TableCell>
-                                                {estudiante.curso_detail?.nombre || 'No asignado'}
-                                            </TableCell>
-                                            <TableCell className="text-right">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={() => handleOpenEditDialog(estudiante)}
-                                                >
-                                                    <Edit className="h-4 w-4"/>
-                                                </Button>
-                                                {isAdmin && (
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        onClick={() => handleDeleteEstudiante(estudiante.id)}
-                                                    >
-                                                        <Trash2 className="h-4 w-4 text-red-500"/>
-                                                    </Button>
-                                                )}
-                                            </TableCell>
-                                        </TableRow>
-                                    ))
-                                )}
-                            </TableBody>
-                        </Table>
-                    </div>
+                  <div className="rounded-xl border shadow-sm overflow-hidden">
+  <Table>
+  <TableCaption className="text-muted-foreground">
+    Lista de estudiantes registrados
+  </TableCaption>
+  <TableHeader className="bg-black">
+    <TableRow>
+      <TableHead className="font-semibold text-white uppercase tracking-wide">ID</TableHead>
+      <TableHead className="font-semibold text-white uppercase tracking-wide">Nombre</TableHead>
+      <TableHead className="font-semibold text-white uppercase tracking-wide">Usuario</TableHead>
+      <TableHead className="font-semibold text-white uppercase tracking-wide">Email</TableHead>
+      <TableHead className="font-semibold text-white uppercase tracking-wide">Curso</TableHead>
+      <TableHead className="font-semibold text-white uppercase tracking-wide text-right">Acciones</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {filteredEstudiantes.length === 0 ? (
+      <TableRow>
+        <TableCell colSpan={6} className="text-center py-6 text-muted-foreground italic">
+          No se encontraron estudiantes
+        </TableCell>
+      </TableRow>
+    ) : (
+      filteredEstudiantes.map((estudiante: Estudiante, index: number) => (
+        <TableRow
+          key={estudiante.id}
+          className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}
+        >
+          <TableCell className="font-mono text-sm text-gray-700">{estudiante.id}</TableCell>
+          <TableCell className="font-semibold text-gray-900">
+            {estudiante.first_name} {estudiante.last_name}
+          </TableCell>
+          <TableCell className="text-gray-700">{estudiante.username}</TableCell>
+          <TableCell className="text-gray-700">{estudiante.email}</TableCell>
+          <TableCell>
+            {estudiante.curso_detail ? (
+              <span className="inline-block px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
+                {estudiante.curso_detail.nombre}
+              </span>
+            ) : (
+              <span className="italic text-muted-foreground">No asignado</span>
+            )}
+          </TableCell>
+          <TableCell className="text-right space-x-2">
+            <button
+              onClick={() => handleOpenEditDialog(estudiante)}
+              className="px-3 py-1 text-sm font-medium bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+            >
+              Editar
+            </button>
+            {isAdmin && (
+              <button
+                onClick={() => handleDeleteEstudiante(estudiante.id)}
+                className="px-3 py-1 text-sm font-medium bg-red-600 text-white rounded hover:bg-red-700 transition"
+              >
+                Eliminar
+              </button>
+            )}
+          </TableCell>
+        </TableRow>
+      ))
+    )}
+  </TableBody>
+</Table>
+</div>
          
 
             {/* Diálogo para crear/editar estudiante */}

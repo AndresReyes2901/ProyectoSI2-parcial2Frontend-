@@ -5,9 +5,14 @@ import api from '@/services/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { UsersRound, CalendarCheck2, ClipboardCheck, Grid2X2, AlertCircle, Award, BookOpen, Users, CheckSquare,LibraryBig,FileText } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend } from 'recharts';
+
 import { DashboardStats, EstudianteDashboard } from '@/types/academic';
 import { toast } from '@/components/ui/use-toast';
+import { Bar ,Line,Pie} from 'react-chartjs-2'
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Legend ,PointElement, LineElement, ArcElement} from 'chart.js'
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend,PointElement, LineElement, ArcElement)
+
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
@@ -218,317 +223,369 @@ const Dashboard: React.FC = () => {
     // Total de participaciones
     const totalParticipaciones = estudianteDashboard.participaciones.reduce((sum, item) => sum + item.total, 0);
 
+    //dashboard estudiante
     return (
-      <div className="space-y-6 animate-fade-in">
+      <div className="space-y-6 animate-fade-in bg-white p-6 rounded-lg">
      
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="relative bg-gradient-to-r from-blue-600 to-blue-400 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden">
-  {/* Ícono decorativo de fondo */}
-  <Award className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  {/* Card Promedio General */}
+  <Card className="relative bg-zinc-900 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden rounded-lg">
+    <Award className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
+    <CardHeader className="pb-2 z-10 relative">
+      <CardTitle className="text-sm font-medium text-white/80">
+        Promedio General
+      </CardTitle>
+    </CardHeader>
+    <CardContent className="z-10 relative">
+      <div className="text-3xl font-bold text-white">
+        {promedioGeneral.toFixed(1)}
+      </div>
+      <p className="text-xs text-white/80 mt-1">
+        Calificación promedio general
+      </p>
+    </CardContent>
+  </Card>
 
-  <CardHeader className="pb-2 z-10 relative">
-    <CardTitle className="text-sm font-medium text-white/80">
-      Promedio General
-    </CardTitle>
-  </CardHeader>
+  {/* Card Materias */}
+  <Card className="relative bg-zinc-900 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden rounded-lg">
+    <LibraryBig className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
+    <CardHeader className="pb-2 z-10 relative">
+      <CardTitle className="text-sm font-medium text-white/80">
+        Materias
+      </CardTitle>
+    </CardHeader>
+    <CardContent className="z-10 relative">
+      <div className="text-3xl font-bold text-white">
+        {estudianteDashboard.notas.length}
+      </div>
+      <p className="text-xs text-white/80 mt-1">
+        Materias cursadas
+      </p>
+    </CardContent>
+  </Card>
 
-  <CardContent className="z-10 relative">
-    <div className="text-3xl font-bold text-white">
-      {promedioGeneral.toFixed(1)}
-    </div>
-    <p className="text-xs text-white/80 mt-1">
-      Calificación promedio general
-    </p>
-  </CardContent>
-</Card>
+  {/* Card Asistencia */}
+  <Card className="relative bg-zinc-900 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden rounded-lg">
+    <CalendarCheck2 className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
+    <CardHeader className="pb-2 z-10 relative">
+      <CardTitle className="text-sm font-medium text-white/80">
+        Asistencia
+      </CardTitle>
+    </CardHeader>
+    <CardContent className="z-10 relative">
+      <div className="text-3xl font-bold text-white">
+        {asistenciaPromedio.toFixed(1)}%
+      </div>
+      <p className="text-xs text-white/80 mt-1">
+        Porcentaje de asistencia
+      </p>
+    </CardContent>
+  </Card>
 
-<Card className="relative bg-gradient-to-r from-pink-400 to-pink-600 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden">
-  {/* Ícono decorativo de fondo */}
-  <LibraryBig className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
-
-  <CardHeader className="pb-2 z-10 relative">
-    <CardTitle className="text-sm font-medium text-white/80">
-      Materias
-    </CardTitle>
-  </CardHeader>
-
-  <CardContent className="z-10 relative">
-    <div className="text-3xl font-bold text-white">
-      {estudianteDashboard.notas.length}
-    </div>
-    <p className="text-xs text-white/80 mt-1">
-      Materias cursadas
-    </p>
-  </CardContent>
-</Card>
-
-<Card className="relative bg-gradient-to-r from-purple-500 to-indigo-600 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden">
-  {/* Ícono decorativo de fondo */}
-  <CalendarCheck2 className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
-
-  <CardHeader className="pb-2 z-10 relative">
-    <CardTitle className="text-sm font-medium text-white/80">
-      Asistencia
-    </CardTitle>
-  </CardHeader>
-
-  <CardContent className="z-10 relative">
-    <div className="text-3xl font-bold text-white">
-      {asistenciaPromedio.toFixed(1)}%
-    </div>
-    <p className="text-xs text-white/80 mt-1">
-      Porcentaje de asistencia
-    </p>
-  </CardContent>
-</Card>
-
-
-<Card className="relative bg-gradient-to-r from-orange-400 to-red-500 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden">
-  {/* Ícono decorativo de fondo */}
-  <ClipboardCheck className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
-
-  <CardHeader className="pb-2 z-10 relative">
-    <CardTitle className="text-sm font-medium text-white/80">
-      Participaciones
-    </CardTitle>
-  </CardHeader>
-
-  <CardContent className="z-10 relative">
-    <div className="text-3xl font-bold text-white">
-      {totalParticipaciones}
-    </div>
-    <p className="text-xs text-white/80 mt-1">
-      Total de participaciones
-    </p>
-  </CardContent>
-</Card>
-
-
-        </div>
-
+  {/* Card Participaciones */}
+  <Card className="relative bg-zinc-900 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden rounded-lg">
+    <ClipboardCheck className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
+    <CardHeader className="pb-2 z-10 relative">
+      <CardTitle className="text-sm font-medium text-white/80">
+        Participaciones
+      </CardTitle>
+    </CardHeader>
+    <CardContent className="z-10 relative">
+      <div className="text-3xl font-bold text-white">
+        {totalParticipaciones}
+      </div>
+      <p className="text-xs text-white/80 mt-1">
+        Total de participaciones
+      </p>
+    </CardContent>
+  </Card>
+</div>
         {/* Notas por Materia y Componentes */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Notas por trimestre */}
-          {notasEstudianteData.length > 0 && (
-            <Card className="bg-white shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold text-gray-900">
-                  Notas por Trimestre
-                </CardTitle>
-                <CardDescription>
-                  {estudianteDashboard.notas.length > 0 ? estudianteDashboard.notas[0].nombre : 'Evolución de notas'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={notasEstudianteData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                    <XAxis dataKey="name" stroke="#666" />
-                    <YAxis stroke="#666" domain={[0, 100]} />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: 'white',
-                        border: '1px solid #e2e8f0',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                      }}
-                      formatter={(value) => [`${Number(value).toFixed(1)}`, 'Nota']}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="nota"
-                      stroke="#1e40af"
-                      strokeWidth={3}
-                      dot={{ fill: '#1e40af', strokeWidth: 2, r: 6 }}
-                      activeDot={{ r: 8 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Componentes de la nota del último trimestre */}
-          {componentesEvaluacionData.length > 0 && (
-            <Card className="bg-white shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold text-gray-900">
-                  Componentes de Evaluación
-                </CardTitle>
-                <CardDescription>
-                  Último trimestre de {estudianteDashboard.notas.length > 0 ? estudianteDashboard.notas[0].nombre : 'la materia'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <RadarChart data={componentesEvaluacionData}>
-                    <PolarGrid />
-                    <PolarAngleAxis dataKey="name" />
-                    <PolarRadiusAxis domain={[0, 35]} />
-                    <Radar
-                      name="Puntos obtenidos"
-                      dataKey="valor"
-                      stroke="#8884d8"
-                      fill="#8884d8"
-                      fillOpacity={0.6}
-                    />
-                    <Legend />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: 'white',
-                        border: '1px solid #e2e8f0',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                      }}
-                      formatter={(value) => [`${Number(value).toFixed(2)}`, 'Puntos']}
-                    />
-                  </RadarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          )}
+       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+  {/* Notas por Trimestre */}
+  {notasEstudianteData.length > 0 && (
+    <Card className="bg-zinc-900 shadow-sm rounded-lg">
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold text-white">
+          Notas por Trimestre
+        </CardTitle>
+        <CardDescription className="text-gray-300">
+          {estudianteDashboard.notas.length > 0
+            ? estudianteDashboard.notas[0].nombre
+            : 'Evolución de notas'}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="bg-white p-4 rounded-b-lg">
+        <div style={{ width: '100%', height: 300 }}>
+          <Line
+            data={{
+              labels: notasEstudianteData.map((d) => d.name),
+              datasets: [
+                {
+                  label: 'Nota',
+                  data: notasEstudianteData.map((d) => d.nota),
+                  borderColor: '#1e40af',
+                  backgroundColor: 'rgba(30, 64, 175, 0.3)',
+                  fill: true,
+                  tension: 0.4,
+                  pointRadius: 6,
+                  pointHoverRadius: 8,
+                  borderWidth: 3,
+                  pointBackgroundColor: '#1e40af',
+                  pointBorderWidth: 2,
+                },
+              ],
+            }}
+            options={{
+              scales: {
+                y: {
+                  min: 0,
+                  max: 100,
+                  ticks: { color: '#666' },
+                  grid: { color: '#f0f0f0' },
+                },
+                x: {
+                  ticks: { color: '#666' },
+                  grid: { color: '#f0f0f0' },
+                },
+              },
+              plugins: {
+                tooltip: {
+                  backgroundColor: 'white',
+                  borderColor: '#e2e8f0',
+                  borderWidth: 1,
+                  padding: 8,
+                  displayColors: false,
+                  titleColor: '#000',
+                  bodyColor: '#000',
+                  callbacks: {
+                    label: (context) =>
+                      `Nota: ${context.parsed.y.toFixed(1)}`,
+                  },
+                },
+                legend: { display: false },
+              },
+              maintainAspectRatio: false,
+            }}
+          />
         </div>
+      </CardContent>
+    </Card>
+  )}
 
-        {/* Asistencias y Participaciones */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Asistencia por materias */}
-          {asistenciaPorMateriaData.length > 0 && (
-            <Card className="bg-white shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold text-gray-900">
-                  Asistencia por Materias
-                </CardTitle>
-                <CardDescription>
-                  Porcentaje de asistencia en cada materia
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={asistenciaPorMateriaData} layout="vertical">
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                    <XAxis type="number" domain={[0, 100]} />
-                    <YAxis type="category" dataKey="name" width={150} />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: 'white',
-                        border: '1px solid #e2e8f0',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                      }}
-                      formatter={(value) => [`${Number(value).toFixed(1)}%`, 'Asistencia']}
-                    />
-                    <Bar
-                      dataKey="porcentaje"
-                      name="Porcentaje"
-                    >
-                      {asistenciaPorMateriaData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Participaciones */}
-          {participacionesPorMateriaData.length > 0 && (
-            <Card className="bg-white shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold text-gray-900">
-                  Participaciones por Materias
-                </CardTitle>
-                <CardDescription>
-                  Cantidad y calificación promedio de participaciones
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={participacionesPorMateriaData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                    <XAxis dataKey="name" />
-                    <YAxis yAxisId="left" orientation="left" />
-                    <YAxis yAxisId="right" orientation="right" domain={[0, 10]} />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: 'white',
-                        border: '1px solid #e2e8f0',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                      }}
-                    />
-                    <Legend />
-                    <Bar yAxisId="left" dataKey="total" name="Total participaciones" fill="#8884d8" />
-                    <Bar yAxisId="right" dataKey="promedio" name="Promedio valor" fill="#82ca9d" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          )}
+  {/* Asistencia por Materias */}
+  {asistenciaPorMateriaData.length > 0 && (
+    <Card className="bg-zinc-900 shadow-sm rounded-lg">
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold text-white">
+          Asistencia por Materias
+        </CardTitle>
+        <CardDescription className="text-gray-300">
+          Porcentaje de asistencia en cada materia
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="bg-white p-4 rounded-b-lg">
+        <div style={{ width: '100%', height: 300 }}>
+          <Bar
+            data={{
+              labels: asistenciaPorMateriaData.map((d) => d.name),
+              datasets: [
+                {
+                  label: 'Porcentaje',
+                  data: asistenciaPorMateriaData.map((d) => d.porcentaje),
+                  backgroundColor: asistenciaPorMateriaData.map((d) => d.color),
+                  borderWidth: 1,
+                },
+              ],
+            }}
+            options={{
+              indexAxis: 'y',
+              scales: {
+                x: {
+                  min: 0,
+                  max: 100,
+                  ticks: {
+                    color: '#666',
+                    callback: (value) => `${value}%`,
+                  },
+                  grid: { color: '#f0f0f0' },
+                },
+                y: {
+                  ticks: { color: '#666' },
+                  grid: { display: false },
+                },
+              },
+              plugins: {
+                tooltip: {
+                  backgroundColor: 'white',
+                  borderColor: '#e2e8f0',
+                  borderWidth: 1,
+                  padding: 8,
+                  titleColor: '#000',
+                  bodyColor: '#000',
+                  callbacks: {
+                    label: (context) =>
+                      `Asistencia: ${context.parsed.x.toFixed(1)}%`,
+                  },
+                },
+                legend: { display: false },
+              },
+              maintainAspectRatio: false,
+            }}
+          />
         </div>
+      </CardContent>
+    </Card>
+  )}
+
+  {/* Participaciones por Materias */}
+  {participacionesPorMateriaData.length > 0 && (
+    <Card className="bg-zinc-900 shadow-sm rounded-lg">
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold text-white">
+          Participaciones por Materias
+        </CardTitle>
+        <CardDescription className="text-gray-300">
+          Cantidad y calificación promedio de participaciones
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="bg-white p-4 rounded-b-lg">
+        <div style={{ width: '100%', height: 300 }}>
+          <Bar
+            data={{
+              labels: participacionesPorMateriaData.map((d) => d.name),
+              datasets: [
+                {
+                  label: 'Total participaciones',
+                  data: participacionesPorMateriaData.map((d) => d.total),
+                  backgroundColor: '#8884d8',
+                  yAxisID: 'left-y-axis',
+                },
+                {
+                  label: 'Promedio valor',
+                  data: participacionesPorMateriaData.map((d) => d.promedio),
+                  backgroundColor: '#82ca9d',
+                  yAxisID: 'right-y-axis',
+                },
+              ],
+            }}
+            options={{
+              scales: {
+                'left-y-axis': {
+                  type: 'linear',
+                  position: 'left',
+                  beginAtZero: true,
+                  ticks: { color: '#666' },
+                  grid: { color: '#f0f0f0' },
+                },
+                'right-y-axis': {
+                  type: 'linear',
+                  position: 'right',
+                  beginAtZero: true,
+                  min: 0,
+                  max: 10,
+                  ticks: { color: '#666' },
+                  grid: { drawOnChartArea: false },
+                },
+                x: {
+                  ticks: { color: '#666' },
+                  grid: { color: '#f0f0f0' },
+                },
+              },
+              plugins: {
+                tooltip: {
+                  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                  titleColor: '#fff',
+                  bodyColor: '#fff',
+                  borderColor: '#333',
+                  borderWidth: 1,
+                  cornerRadius: 6,
+                  boxPadding: 6,
+                },
+                legend: { position: 'top', labels: { color: '#666' } },
+              },
+              maintainAspectRatio: false,
+            }}
+          />
+        </div>
+      </CardContent>
+    </Card>
+  )}
+</div>
+
 
         {/* Predicciones */}
         {estudianteDashboard.predicciones && estudianteDashboard.predicciones.length > 0 && (
-          <Card className="bg-white shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-900">
-                Predicción de Rendimiento
-              </CardTitle>
-              <CardDescription>
-                Estimación de rendimiento académico
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {estudianteDashboard.predicciones.map((prediccion) => {
-                  const bgColor = prediccion.nivel_rendimiento === 'ALTO' ?
-                    'bg-green-100' :
-                    prediccion.nivel_rendimiento === 'MEDIO' ? 'bg-yellow-100' : 'bg-red-100';
+  <Card className="bg-white shadow-sm">
+    <CardHeader>
+      <CardTitle className="text-lg font-semibold text-gray-900">
+        Predicción de Rendimiento
+      </CardTitle>
+      <CardDescription>
+        Estimación de rendimiento académico
+      </CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-3">
+        {estudianteDashboard.predicciones.map((prediccion) => {
+          const bgColor =
+            prediccion.nivel_rendimiento === 'ALTO'
+              ? 'bg-green-100'
+              : prediccion.nivel_rendimiento === 'MEDIO'
+              ? 'bg-yellow-100'
+              : 'bg-red-100';
 
-                  const textColor = prediccion.nivel_rendimiento === 'ALTO' ?
-                    'text-green-800' :
-                    prediccion.nivel_rendimiento === 'MEDIO' ? 'text-yellow-800' : 'text-red-800';
+          const textColor =
+            prediccion.nivel_rendimiento === 'ALTO'
+              ? 'text-green-800'
+              : prediccion.nivel_rendimiento === 'MEDIO'
+              ? 'text-yellow-800'
+              : 'text-red-800';
 
-                  return (
-                    <div key={prediccion.id} className={`p-4 rounded-lg ${bgColor}`}>
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className={`font-semibold ${textColor}`}>{prediccion.materia_nombre}</h3>
-                        <Badge
-                          variant={
-                            prediccion.nivel_rendimiento === 'ALTO' ? 'outline' :
-                              prediccion.nivel_rendimiento === 'MEDIO' ? 'secondary' : 'destructive'
-                          }
-                        >
-                          {prediccion.nivel_rendimiento}
-                        </Badge>
-                      </div>
-                      <div className="grid grid-cols-1 md:grid-cols-4 gap-2 mt-2">
-                        <div>
-                          <p className={`text-xs font-medium ${textColor}`}>Nota predicha</p>
-                          <p className={`text-lg font-bold ${textColor}`}>{prediccion.valor_numerico.toFixed(1)}</p>
-                        </div>
-                        <div>
-                          <p className={`text-xs font-medium ${textColor}`}>Prob. aprobar</p>
-                          <p className={`text-lg font-bold ${textColor}`}>{prediccion.probabilidad_aprobar.toFixed(1)}%</p>
-                        </div>
-                        <div>
-                          <p className={`text-xs font-medium ${textColor}`}>Promedio actual</p>
-                          <p className={`text-lg font-bold ${textColor}`}>{prediccion.variables.promedio_notas.toFixed(1)}</p>
-                        </div>
-                        <div>
-                          <p className={`text-xs font-medium ${textColor}`}>Asistencia</p>
-                          <p className={`text-lg font-bold ${textColor}`}>{prediccion.variables.porcentaje_asistencia.toFixed(1)}%</p>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })}
+          const badgeVariant =
+            prediccion.nivel_rendimiento === 'ALTO'
+              ? 'outline'
+              : prediccion.nivel_rendimiento === 'MEDIO'
+              ? 'secondary'
+              : 'destructive';
+
+          return (
+            <div key={prediccion.id} className={`p-4 rounded-lg ${bgColor}`}>
+              <div className="flex justify-between items-center mb-2">
+                <h3 className={`font-semibold text-lg ${textColor}`}>
+                  {prediccion.materia_nombre}
+                </h3>
+                <Badge variant={badgeVariant} className="flex items-center gap-1 px-3 py-1 text-sm">
+                  🎯 {prediccion.nivel_rendimiento}
+                </Badge>
               </div>
-            </CardContent>
-          </Card>
-        )}
+              <div className="flex flex-col gap-1 text-sm">
+                <div className={`flex justify-between ${textColor}`}>
+                  <span>Nota predicha:</span>
+                  <span className="font-bold">{prediccion.valor_numerico.toFixed(1)}</span>
+                </div>
+                <div className={`flex justify-between ${textColor}`}>
+                  <span>Prob. aprobar:</span>
+                  <span className="font-bold">{prediccion.probabilidad_aprobar.toFixed(1)}%</span>
+                </div>
+                <div className={`flex justify-between ${textColor}`}>
+                  <span>Promedio actual:</span>
+                  <span className="font-bold">{prediccion.variables.promedio_notas.toFixed(1)}</span>
+                </div>
+                <div className={`flex justify-between ${textColor}`}>
+                  <span>Asistencia:</span>
+                  <span className="font-bold">{prediccion.variables.porcentaje_asistencia.toFixed(1)}%</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </CardContent>
+  </Card>
+)}
 
         {/* Tabla de Notas por Materia */}
         <Card className="bg-white shadow-sm">
@@ -604,274 +661,182 @@ const Dashboard: React.FC = () => {
     );
   }
 
+
   // Dashboard para administradores y profesores (el que ya tenías)
-  return (
-    <div className="space-y-6 animate-fade-in">
-     
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-       <Card className="relative bg-gradient-to-r from-green-600 to-green-400 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden">
-  {/* Ícono decorativo de fondo */}
-  <UsersRound className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
-
-  <CardHeader className="pb-2 z-10 relative">
-    <CardTitle className="text-sm font-medium text-white/80">
-      Total Estudiantes
-    </CardTitle>
-  </CardHeader>
-
-  <CardContent className="z-10 relative">
-    <div className="text-3xl font-bold text-white">
-      {stats?.total_estudiantes ?? 0}
-    </div>
-    <p className="text-xs text-white/80 mt-1">
-      Estudiantes activos
-    </p>
-  </CardContent>
-</Card>
-
-
-       <Card className="relative bg-gradient-to-r from-pink-400 to-pink-600 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden">
-  {/* Ícono decorativo de fondo */}
-  <LibraryBig className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
-
-  <CardHeader className="pb-2 z-10 relative">
-    <CardTitle className="text-sm font-medium text-white/80">
-      Materias
-    </CardTitle>
-  </CardHeader>
-
-  <CardContent className="z-10 relative">
-    <div className="text-3xl font-bold text-white">
-      {stats?.total_materias ?? 0}
-    </div>
-    <p className="text-xs text-white/80 mt-1">
-      Materias registradas
-    </p>
-  </CardContent>
-</Card>
-
-
-  <Card className="relative bg-gradient-to-r from-yellow-400 to-amber-600 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden">
-  {/* Ícono grande decorativo al fondo */}
-  <FileText className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
-
-  <CardHeader className="pb-2 z-10 relative">
-    <CardTitle className="text-sm font-medium text-white/80">
-      Promedio General
-    </CardTitle>
-  </CardHeader>
-
-  <CardContent className="z-10 relative">
-    <div className="text-3xl font-bold text-white">
-      {(stats?.promedio_general ?? 0).toFixed(1)}
-    </div>
-    <p className="text-xs text-white/80 mt-1">
-      Calificación promedio
-    </p>
-  </CardContent>
-</Card>
-
-<Card className="relative bg-gradient-to-r from-blue-400 to-blue-600 shadow-sm hover:shadow-md transition-shadow text-white overflow-hidden">
-  {/* Ícono decorativo grande */}
-  <CalendarCheck2 className="absolute right-4 top-4 h-16 w-16 text-white/20 pointer-events-none" />
-
-  <CardHeader className="pb-2 z-10 relative">
-    <CardTitle className="text-sm font-medium text-white/80">
-      Asistencia
-    </CardTitle>
-  </CardHeader>
-
-  <CardContent className="z-10 relative">
-    <div className="text-3xl font-bold text-white">
-      {(stats?.asistencia_promedio ?? 0).toFixed(1)}%
-    </div>
-    <p className="text-xs text-white/80 mt-1">
-      Promedio de asistencia
-    </p>
-  </CardContent>
-</Card>
-
-       
-      </div>
-
-      {/* Materias y Promedios */}
-      {materiasData.length > 0 && (
-        <Card className="bg-white shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-900">
-              Estadísticas por Materia
-            </CardTitle>
-            <CardDescription>
-              Promedio de notas por materia
-            </CardDescription>
+return (
+  <div className="space-y-10 px-4 bg-white animate-fade-in">
+    
+    {/* KPI Section */}
+    <section>
+      <h2 className="text-xl font-semibold text-gray-900 mb-4">Resumen General</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Total Estudiantes */}
+        <Card className="relative bg-zinc-900 text-white overflow-hidden shadow-md">
+          <UsersRound className="absolute right-3 top-3 h-14 w-14 text-white/20 pointer-events-none" />
+          <CardHeader className="pb-1 relative z-10">
+            <CardTitle className="text-sm font-medium text-white/90">Total Estudiantes</CardTitle>
           </CardHeader>
-          <CardContent>
-           <ResponsiveContainer width="100%" height={300}>
-  <BarChart data={materiasData}>
-    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-    <XAxis
-      dataKey="materia"
-      stroke="#666"
-      angle={-45}          // Rotar etiquetas diagonalmente
-      textAnchor="end"     // Anclar texto al final para mejor alineación
-      interval={0}         // Mostrar todas las etiquetas sin saltos
-      height={60}          // Ajustar altura para que quepan etiquetas rotadas
-    />
-    <YAxis stroke="#666" domain={[0, 100]} />
-    <Tooltip
-      contentStyle={{
-        backgroundColor: 'white',
-        border: '1px solid #e2e8f0',
-        borderRadius: '8px',
-        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-      }}
-      formatter={(value) => [`${Number(value).toFixed(1)}`, 'Promedio']}
-    />
-    <Bar
-      dataKey="promedio"
-      fill="#3b82f6"
-      radius={[4, 4, 0, 0]}
-      name="Promedio"
-    />
-  </BarChart>
-</ResponsiveContainer>
-
+          <CardContent className="relative z-10">
+            <div className="text-3xl font-bold">{stats?.total_estudiantes ?? 0}</div>
+            <p className="text-xs text-gray-300 mt-1">Estudiantes activos</p>
           </CardContent>
         </Card>
-      )}
 
-      {/* Charts Section */}
+        {/* Materias */}
+        <Card className="relative bg-zinc-900 text-white overflow-hidden shadow-md">
+          <LibraryBig className="absolute right-3 top-3 h-14 w-14 text-white/20 pointer-events-none" />
+          <CardHeader className="pb-1 relative z-10">
+            <CardTitle className="text-sm font-medium text-white/90">Materias</CardTitle>
+          </CardHeader>
+          <CardContent className="relative z-10">
+            <div className="text-3xl font-bold">{stats?.total_materias ?? 0}</div>
+            <p className="text-xs text-gray-300 mt-1">Materias registradas</p>
+          </CardContent>
+        </Card>
+
+        {/* Promedio General */}
+        <Card className="relative bg-zinc-900 text-white overflow-hidden shadow-md">
+          <FileText className="absolute right-3 top-3 h-14 w-14 text-white/20 pointer-events-none" />
+          <CardHeader className="pb-1 relative z-10">
+            <CardTitle className="text-sm font-medium text-white/90">Promedio General</CardTitle>
+          </CardHeader>
+          <CardContent className="relative z-10">
+            <div className="text-3xl font-bold">{(stats?.promedio_general ?? 0).toFixed(1)}</div>
+            <p className="text-xs text-gray-300 mt-1">Calificación promedio</p>
+          </CardContent>
+        </Card>
+
+        {/* Asistencia */}
+        <Card className="relative bg-zinc-900 text-white overflow-hidden shadow-md">
+          <CalendarCheck2 className="absolute right-3 top-3 h-14 w-14 text-white/20 pointer-events-none" />
+          <CardHeader className="pb-1 relative z-10">
+            <CardTitle className="text-sm font-medium text-white/90">Asistencia</CardTitle>
+          </CardHeader>
+          <CardContent className="relative z-10">
+            <div className="text-3xl font-bold">{(stats?.asistencia_promedio ?? 0).toFixed(1)}%</div>
+            <p className="text-xs text-gray-300 mt-1">Promedio de asistencia</p>
+          </CardContent>
+        </Card>
+      </div>
+    </section>
+
+    {/* Estadísticas por materia */}
+    {materiasData.length > 0 && (
+      <section>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Rendimiento Académico por Materia</h2>
+        <Card className="bg-zinc-900 text-white shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold text-white">Promedios por Materia</CardTitle>
+            <CardDescription className="text-gray-400">Comparativa horizontal de promedios</CardDescription>
+          </CardHeader>
+          <CardContent className="overflow-x-auto bg-white rounded-lg p-4">
+            <Bar
+              data={{
+                labels: materiasData.map((item) => item.materia),
+                datasets: [
+                  {
+                    label: 'Promedio',
+                    data: materiasData.map((item) => item.promedio),
+                    backgroundColor: '#3b82f6',
+                    borderRadius: 6,
+                  },
+                ],
+              }}
+              options={{
+                indexAxis: 'y',
+                responsive: true,
+                scales: {
+                  x: { min: 0, max: 100 },
+                },
+                plugins: {
+                  tooltip: {
+                    callbacks: {
+                      label: (context) => `Promedio: ${context.parsed.x.toFixed(1)}`,
+                    },
+                  },
+                  legend: { display: false },
+                },
+              }}
+            />
+          </CardContent>
+        </Card>
+      </section>
+    )}
+
+    {/* Distribuciones */}
+    <section>
+      <h2 className="text-xl font-semibold text-gray-900 mb-4">Distribuciones</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Tendencia de Notas */}
-        {notasData.length > 0 && (
-          <Card className="bg-white shadow-sm">
+        {/* Asistencia */}
+        <Card className="bg-zinc-900 text-white shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold text-white">Distribución de Asistencia</CardTitle>
+            <CardDescription className="text-gray-400">Porcentajes generales de asistencia</CardDescription>
+          </CardHeader>
+          <CardContent className="h-64 bg-white rounded-lg p-4">
+            <Pie
+              data={{
+                labels: asistenciaData.map((item) => item.name),
+                datasets: [
+                  {
+                    data: asistenciaData.map((item) => item.value),
+                    backgroundColor: asistenciaData.map((item) => item.color),
+                  },
+                ],
+              }}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  tooltip: {
+                    callbacks: {
+                      label: (context) => `${context.label}: ${context.parsed.toFixed(1)}%`,
+                    },
+                  },
+                },
+              }}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Predicciones */}
+        {prediccionesData.length > 0 && (
+          <Card className="bg-zinc-900 text-white shadow-sm">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-900">
-                Tendencia de Notas
-              </CardTitle>
-              <CardDescription>
-                Evolución del promedio académico por trimestre
-              </CardDescription>
+              <CardTitle className="text-lg font-semibold text-white">Predicciones de Rendimiento</CardTitle>
+              <CardDescription className="text-gray-400">Distribución por nivel de rendimiento</CardDescription>
             </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={notasData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                  <XAxis dataKey="name" stroke="#666" />
-                  <YAxis stroke="#666" domain={[0, 100]} />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: 'white',
-                      border: '1px solid #e2e8f0',
-                      borderRadius: '8px',
-                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                    }}
-                    formatter={(value) => [`${Number(value).toFixed(1)}`, 'Promedio']}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="promedio"
-                    stroke="#1e40af"
-                    strokeWidth={3}
-                    dot={{ fill: '#1e40af', strokeWidth: 2, r: 6 }}
-                    activeDot={{ r: 8 }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+            <CardContent className="h-64 bg-white rounded-lg p-4">
+              <Pie
+                data={{
+                  labels: prediccionesData.map((item) => item.name),
+                  datasets: [
+                    {
+                      data: prediccionesData.map((item) => item.value),
+                      backgroundColor: prediccionesData.map((item) => item.color),
+                    },
+                  ],
+                }}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    tooltip: {
+                      callbacks: {
+                        label: (context) => `${context.label}: ${context.parsed} estudiantes`,
+                      },
+                    },
+                  },
+                }}
+              />
             </CardContent>
           </Card>
         )}
-
-        {/* Distribución de Asistencia */}
-        <Card className="bg-white shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-900">
-              Distribución de Asistencia
-            </CardTitle>
-            <CardDescription>
-              Porcentaje de asistencia general
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={asistenciaData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, value }) => `${name}: ${Number(value).toFixed(1)}%`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {asistenciaData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip
-                  formatter={(value) => [`${Number(value).toFixed(1)}%`, '']}
-                  contentStyle={{
-                    backgroundColor: 'white',
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
       </div>
-
-      {/* Predicciones por Nivel */}
-      {prediccionesData.length > 0 && (
-        <Card className="bg-white shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-900">
-              Predicciones de Rendimiento
-            </CardTitle>
-            <CardDescription>
-              Distribución de estudiantes según nivel de rendimiento predicho
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={prediccionesData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={true}
-                  label={({ name, value }) => `${name}: ${value}`}
-                  outerRadius={120}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {prediccionesData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip
-                  formatter={(value) => [value, 'Estudiantes']}
-                  contentStyle={{
-                    backgroundColor: 'white',
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      )}
-
-      
-    </div>
-  );
+    </section>
+  </div>
+);
+  {/*hasta aqui */}
 };
 
 export default Dashboard;

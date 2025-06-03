@@ -210,12 +210,7 @@ const CursosPage: React.FC = () => {
             <Card>
                 <CardHeader>
                     <div className="flex items-center justify-between">
-                        <div>
-                            <CardTitle className="text-2xl">Gestión de Cursos</CardTitle>
-                            <CardDescription>
-                                Administra los cursos del sistema
-                            </CardDescription>
-                        </div>
+                       
                         <Button onClick={() => handleOpenDialog()}>
                             <Plus className="mr-2 h-4 w-4"/> Nuevo Curso
                         </Button>
@@ -246,85 +241,94 @@ const CursosPage: React.FC = () => {
                             </Select>
                         </div>
                     </div>
+{filteredCursos.length > 0 ? (
+  <div className="rounded-xl border shadow-sm overflow-hidden">
+    <Table>
+  <TableHeader className="bg-black">
+    <TableRow>
+      <TableHead className="font-semibold text-white uppercase tracking-wide">ID</TableHead>
+      <TableHead className="font-semibold text-white uppercase tracking-wide">Nombre</TableHead>
+      <TableHead className="font-semibold text-white uppercase tracking-wide">Nivel</TableHead>
+      <TableHead className="font-semibold text-white uppercase tracking-wide">Materias</TableHead>
+      <TableHead className="font-semibold text-white uppercase tracking-wide">Estado</TableHead>
+      <TableHead className="font-semibold text-white uppercase tracking-wide text-right">Acciones</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {filteredCursos.length === 0 ? (
+      <TableRow>
+        <TableCell colSpan={6} className="text-center py-6 text-muted-foreground italic">
+          No se encontraron cursos
+        </TableCell>
+      </TableRow>
+    ) : (
+      filteredCursos.map((curso, index) => (
+        <TableRow
+          key={curso.id}
+          className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}
+        >
+          <TableCell className="font-mono text-sm text-gray-700">{curso.id}</TableCell>
+          <TableCell className="font-semibold text-gray-900">{curso.nombre}</TableCell>
+          <TableCell className="text-gray-700">{curso.nivel}</TableCell>
+          <TableCell className="text-gray-700">{curso.materias?.length || 0}</TableCell>
+          <TableCell>
+            <span className="italic text-green-600 font-semibold">Activo</span>
+          </TableCell>
+          <TableCell className="text-right space-x-2">
+            <button
+              onClick={() => handleViewCurso(curso.id)}
+              className="px-3 py-1 text-sm font-medium bg-gray-700 text-white rounded hover:bg-gray-800 transition"
+            >
+              Ver
+            </button>
+            <button
+              onClick={() => handleOpenDialog(curso)}
+              className="px-3 py-1 text-sm font-medium bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+            >
+              Editar
+            </button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <button className="px-3 py-1 text-sm font-medium bg-red-600 text-white rounded hover:bg-red-700 transition">
+                  Eliminar
+                </button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Esta acción no se puede deshacer. Esto eliminará permanentemente el curso <strong>{curso.nombre}</strong>.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => handleDeleteCurso(curso.id)}
+                    className="bg-red-500 hover:bg-red-600"
+                  >
+                    Eliminar
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </TableCell>
+        </TableRow>
+      ))
+    )}
+  </TableBody>
+</Table>
+  </div>
+) : (
+  <div className="flex h-[300px] items-center justify-center rounded-md border border-dashed">
+    <div className="text-center">
+      <p className="mb-2 text-sm text-muted-foreground">No hay cursos que mostrar</p>
+      <Button onClick={() => handleOpenDialog()} variant="outline" size="sm">
+        <Plus className="mr-2 h-4 w-4" /> Agregar curso
+      </Button>
+    </div>
+  </div>
+)}
 
-                    {filteredCursos.length > 0 ? (
-                        <div className="rounded-md border">
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>ID</TableHead>
-                                        <TableHead>Nombre</TableHead>
-                                        <TableHead>Nivel</TableHead>
-                                        <TableHead>Materias</TableHead>
-                                        <TableHead>Estado</TableHead>
-                                        <TableHead className="text-right">Acciones</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {filteredCursos.map((curso) => (
-                                        <TableRow key={curso.id}>
-                                            <TableCell>{curso.id}</TableCell>
-                                            <TableCell className="font-medium">{curso.nombre}</TableCell>
-                                            <TableCell>{curso.nivel}</TableCell>
-                                            <TableCell>{curso.materias?.length || 0}</TableCell>
-                                            <TableCell className="text-right">
-                                                <div className="flex justify-end space-x-2">
-                                                    <Button
-                                                        variant="outline"
-                                                        size="sm"
-                                                        onClick={() => handleViewCurso(curso.id)}
-                                                    >
-                                                        Ver
-                                                    </Button>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        onClick={() => handleOpenDialog(curso)}
-                                                    >
-                                                        <Pencil className="h-4 w-4"/>
-                                                    </Button>
-                                                    <AlertDialog>
-                                                        <AlertDialogTrigger asChild>
-                                                            <Button variant="ghost" size="sm">
-                                                                <Trash2 className="h-4 w-4 text-red-500"/>
-                                                            </Button>
-                                                        </AlertDialogTrigger>
-                                                        <AlertDialogContent>
-                                                            <AlertDialogHeader>
-                                                                <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
-                                                                <AlertDialogDescription>
-                                                                    Esta acción no se puede deshacer. Esto eliminará
-                                                                    permanentemente el curso {curso.nombre}.
-                                                                </AlertDialogDescription>
-                                                            </AlertDialogHeader>
-                                                            <AlertDialogFooter>
-                                                                <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                                                                <AlertDialogAction
-                                                                    onClick={() => handleDeleteCurso(curso.id)}
-                                                                    className="bg-red-500 hover:bg-red-600"
-                                                                >
-                                                                    Eliminar
-                                                                </AlertDialogAction>
-                                                            </AlertDialogFooter>
-                                                        </AlertDialogContent>
-                                                    </AlertDialog>
-                                                </div>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </div>
-                    ) : (
-                        <div className="flex h-[300px] items-center justify-center rounded-md border border-dashed">
-                            <div className="text-center">
-                                <p className="mb-2 text-sm text-muted-foreground">No hay cursos que mostrar</p>
-                                <Button onClick={() => handleOpenDialog()} variant="outline" size="sm">
-                                    <Plus className="mr-2 h-4 w-4"/> Agregar curso
-                                </Button>
-                            </div>
-                        </div>
-                    )}
                 </CardContent>
             </Card>
 

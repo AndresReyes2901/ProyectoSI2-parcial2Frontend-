@@ -399,174 +399,208 @@ const Participaciones: React.FC = () => {
   const isPending = createParticipacionMutation.isPending || updateParticipacionMutation.isPending;
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Registro de Participaciones</h1>
-        <MessageCircle className="h-8 w-8 text-academic-purple" />
-      </div>
+   
+  <div className="p-6 space-y-6">
+    {/* Encabezado */}
+   <section className="bg-blue-50 border border-blue-200 rounded-xl p-6 shadow-sm">
+  <header className="mb-4">
+    <h2 className="text-xl font-bold text-blue-800">Configura tu vista</h2>
+    <p className="text-sm text-blue-700">
+      Escoge los criterios para visualizar y registrar las participaciones de los estudiantes.
+    </p>
+  </header>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Filtros de Participación</CardTitle>
-          <CardDescription>Selecciona la materia, curso y/o fecha para ver y registrar participaciones</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="materia">Materia</Label>
-              <Select
-                onValueChange={(value) => setSelectedMateria(parseInt(value))}
-                value={selectedMateria?.toString() || ""}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Seleccionar Materia" />
-                </SelectTrigger>
-                <SelectContent>
-                  {materias.map((materia: Materia) => (
-                    <SelectItem key={materia.id} value={materia.id.toString()}>
-                      {materia.nombre} ({materia.codigo})
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    {/* Select de Materia */}
+    <div className="space-y-1">
+      <Label htmlFor="materia" className="text-sm font-medium text-gray-700">Materia</Label>
+      <Select
+        onValueChange={(value) => setSelectedMateria(parseInt(value))}
+        value={selectedMateria?.toString() || ""}
+      >
+        <SelectTrigger className="w-full bg-white border-gray-300 shadow-sm">
+          <SelectValue placeholder="Seleccionar Materia" />
+        </SelectTrigger>
+        <SelectContent>
+          {materias.map((materia: Materia) => (
+            <SelectItem key={materia.id} value={materia.id.toString()}>
+              {materia.nombre} ({materia.codigo})
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="curso">Curso</Label>
-              <Select
-                onValueChange={(value) => setSelectedCurso(parseInt(value))}
-                value={selectedCurso?.toString() || ""}
-                disabled={!selectedMateria || cursosDisponibles.length === 0}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={!selectedMateria ? "Seleccione materia primero" : (cursosDisponibles.length === 0 ? "No hay cursos para esta materia" : "Seleccionar Curso")} />
-                </SelectTrigger>
-                <SelectContent>
-                  {cursosDisponibles.map((curso: Curso) => (
-                    <SelectItem key={curso.id} value={curso.id.toString()}>
-                      {curso.nombre}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+    {/* Select de Curso */}
+    <div className="space-y-1">
+      <Label htmlFor="curso" className="text-sm font-medium text-gray-700">Curso</Label>
+      <Select
+        onValueChange={(value) => setSelectedCurso(parseInt(value))}
+        value={selectedCurso?.toString() || ""}
+        disabled={!selectedMateria || cursosDisponibles.length === 0}
+      >
+        <SelectTrigger className="w-full bg-white border-gray-300 shadow-sm disabled:opacity-70">
+          <SelectValue placeholder={
+            !selectedMateria
+              ? "Seleccione materia primero"
+              : (cursosDisponibles.length === 0
+                ? "No hay cursos para esta materia"
+                : "Seleccionar Curso")
+          } />
+        </SelectTrigger>
+        <SelectContent>
+          {cursosDisponibles.map((curso: Curso) => (
+            <SelectItem key={curso.id} value={curso.id.toString()}>
+              {curso.nombre}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
 
-            <div className="space-y-2">
-              <Label>Fecha</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="w-full justify-start text-left font-normal"
-                  >
-                    {selectedDate ? (
-                      format(selectedDate, "PPP", { locale: es })
-                    ) : (
-                      <span>Seleccionar fecha</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={selectedDate || undefined}
-                    onSelect={setSelectedDate}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
+    {/* Fecha */}
+    <div className="space-y-1">
+      <Label className="text-sm font-medium text-gray-700">Fecha</Label>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className="w-full justify-start text-left font-normal"
+          >
+            {selectedDate ? (
+              format(selectedDate, "PPP", { locale: es })
+            ) : (
+              <span>Seleccionar fecha</span>
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0">
+          <Calendar
+            mode="single"
+            selected={selectedDate || undefined}
+            onSelect={setSelectedDate}
+            initialFocus
+          />
+        </PopoverContent>
+      </Popover>
+    </div>
 
-            <div className="space-y-2">
-              <Label>Acciones</Label>
-              <Button
-                className="w-full"
-                onClick={handleOpenCreateDialog}
-                disabled={!selectedMateria || !selectedCurso || estudiantes.length === 0}
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                Nueva Participación
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+    {/* Botón Registrar */}
+    <div className="space-y-1">
+      <Label className="text-sm font-medium text-gray-700">Acciones</Label>
+      <Button
+        className="w-full"
+        onClick={handleOpenCreateDialog}
+        disabled={!selectedMateria || !selectedCurso || estudiantes.length === 0}
+      >
+        <Plus className="mr-2 h-4 w-4" />
+        Registrar Participación
+      </Button>
+      {estudiantes.length === 0 && (
+        <p className="text-sm text-gray-500 italic">
+          No hay estudiantes registrados en este curso
+        </p>
+      )}
+    </div>
+  </div>
+</section>
+
 
       {participaciones.length > 0 ? (
-        <Card>
-          <CardHeader>
-            <CardTitle>
-              Participaciones Registradas
-              {selectedMateria && ` - ${getMateriaNombre(selectedMateria)}`}
-              {selectedDate && ` - ${format(selectedDate, 'PPP', { locale: es })}`}
-            </CardTitle>
-            <CardDescription>
-              Lista de participaciones según los filtros seleccionados
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="rounded-md border">
-              <Table>
-                <TableCaption>
-                  Total de participaciones: {participaciones.length}
-                </TableCaption>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Fecha</TableHead>
-                    <TableHead>Estudiante</TableHead>
-                    <TableHead>Materia</TableHead>
-                    <TableHead>Tipo</TableHead>
-                    <TableHead className="text-center">Puntaje</TableHead>
-                    <TableHead className="text-right">Acciones</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {participaciones.map((participacion: Participacion) => (
-                    <TableRow key={participacion.id}>
-                      <TableCell>{format(new Date(participacion.fecha), 'dd/MM/yyyy')}</TableCell>
-                      <TableCell className="font-medium">
-                        {getEstudianteNombre(participacion.estudiante)}
-                      </TableCell>
-                      <TableCell>{getMateriaNombre(participacion.materia)}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{getTipoParticipacionLabel(participacion.tipo)}</Badge>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <Badge>{participacion.valor}</Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleOpenEditDialog(participacion)}
-                        >
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDeleteParticipacion(participacion.id)}
-                        >
-                          <Trash2 className="h-4 w-4 text-red-500" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="text-center py-8 text-gray-500">
-          <MessageCircle className="mx-auto h-12 w-12 opacity-30 mb-2" />
-          {selectedMateria || selectedDate ? (
-            <p>No hay participaciones registradas para los filtros seleccionados</p>
-          ) : (
-            <p>Selecciona una materia y/o fecha para ver participaciones</p>
-          )}
+  <Card>
+    <CardHeader>
+      <CardTitle>
+        Participaciones Registradas
+        {selectedMateria && ` - ${getMateriaNombre(selectedMateria)}`}
+        {selectedDate && ` - ${format(selectedDate, 'PPP', { locale: es })}`}
+      </CardTitle>
+      <CardDescription>
+        Lista de participaciones según los filtros seleccionados
+      </CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="rounded-md border overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-black">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">
+                Fecha
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">
+                Estudiante
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">
+                Materia
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">
+                Tipo
+              </th>
+              <th className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider">
+                Puntaje
+              </th>
+              <th className="px-6 py-3 text-right text-xs font-semibold text-white uppercase tracking-wider">
+                Acciones
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {participaciones.map((participacion: Participacion, index: number) => (
+              <tr
+                key={participacion.id}
+                className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}
+              >
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                  {format(new Date(participacion.fecha), 'dd/MM/yyyy')}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  {getEstudianteNombre(participacion.estudiante)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                  {getMateriaNombre(participacion.materia)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  <Badge variant="outline" className="text-sm">
+                    {getTipoParticipacionLabel(participacion.tipo)}
+                  </Badge>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-center text-sm">
+                  <Badge className="text-sm">{participacion.valor}</Badge>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                  <button
+                    onClick={() => handleOpenEditDialog(participacion)}
+                    className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => handleDeleteParticipacion(participacion.id)}
+                    className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition"
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="p-3 text-sm text-gray-600">
+          Total de participaciones: {participaciones.length}
         </div>
-      )}
+      </div>
+    </CardContent>
+  </Card>
+) : (
+  <div className="text-center py-8 text-gray-500">
+    <MessageCircle className="mx-auto h-12 w-12 opacity-30 mb-2" />
+    {selectedMateria || selectedDate ? (
+      <p>No hay participaciones registradas para los filtros seleccionados</p>
+    ) : (
+      <p>Selecciona una materia y/o fecha para ver participaciones</p>
+    )}
+  </div>
+)}
+
 
       {/* Diálogo para crear/editar participación */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

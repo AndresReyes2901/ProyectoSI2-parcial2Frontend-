@@ -38,11 +38,9 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
             <Grid2X2 className="h-4 w-4" />
           </Button>
           <div>
-            <h2 className="text-xl font-semibold text-gray-900">
-              Sistema de Aula Inteligente
-            </h2>
+          
             <p className="text-sm text-gray-500">
-              Gestión académica con inteligencia artificial
+              Unidad Educativa Victor Lozada
             </p>
           </div>
         </div>

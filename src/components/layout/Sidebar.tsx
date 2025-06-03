@@ -69,16 +69,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       {/* Header */}
       <div className="p-4 border-b border-sidebar-border">
         <div className="flex items-center justify-between">
-          {!isCollapsed && (
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-academic rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">AI</span>
-              </div>
-              <div>
-                <h1 className="text-sidebar-foreground font-bold text-lg">Aula Inteligente</h1>
-              </div>
-            </div>
-          )}
+          
           <Button
             variant="ghost"
             size="sm"
