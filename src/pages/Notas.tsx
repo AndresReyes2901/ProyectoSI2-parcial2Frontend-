@@ -547,10 +547,7 @@ const Notas: React.FC = () => {
 
   return (
     <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Gestión de Notas</h1>
-        <BookOpen className="h-8 w-8 text-academic-blue" />
-      </div>
+     
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className={isAdmin ? "grid w-full grid-cols-3" : "grid w-full grid-cols-1"}>
@@ -807,54 +804,46 @@ const Notas: React.FC = () => {
       {estadisticasMateria ? (
         <div className="space-y-10">
           {/* Cards principales */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-            <Card className="bg-zinc-100 border border-zinc-300">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-black text-lg">Promedio Total</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-4xl font-bold text-academic-blue">{estadisticasMateria.promedio_total.toFixed(2)}</p>
-              </CardContent>
-            </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <Card className="bg-white border-l-4 border-blue-500 shadow-md">
+    <CardHeader className="pb-2">
+      <CardTitle className="text-gray-800 text-xl font-semibold">Promedio Total & Estudiantes</CardTitle>
+    </CardHeader>
+    <CardContent className="grid grid-cols-2 gap-4 items-center">
+      <div className="text-center">
+        <p className="text-sm text-gray-500">Promedio</p>
+        <p className="text-3xl font-bold text-academic-blue">{estadisticasMateria.promedio_total.toFixed(2)}</p>
+      </div>
+      <div className="text-center">
+        <p className="text-sm text-gray-500">Estudiantes</p>
+        <p className="text-3xl font-bold text-black">{estadisticasMateria.total_estudiantes}</p>
+      </div>
+    </CardContent>
+  </Card>
 
-            <Card className="bg-zinc-100 border border-zinc-300">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-black text-lg">Estudiantes</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-4xl font-bold text-black">{estadisticasMateria.total_estudiantes}</p>
-              </CardContent>
-            </Card>
+  <Card className="bg-white border-l-4 border-green-500 shadow-md">
+    
+    <CardContent className="space-y-4">
+      <div className="text-center">
+        <p className="text-sm text-gray-500">Aprobados</p>
+        <p className="text-3xl font-bold text-green-600">{estadisticasMateria.aprobados}</p>
+        <Progress value={estadisticasMateria.porcentaje_aprobacion} className="h-2 mt-1" />
+        <p className="text-xs text-gray-500 mt-1">
+          {estadisticasMateria.porcentaje_aprobacion}% de aprobación
+        </p>
+      </div>
+      <div className="flex justify-between text-sm text-gray-600">
+        <span>Mayor nota:</span>
+        <span className="font-bold text-green-600">{estadisticasMateria.mejor_nota.toFixed(2)}</span>
+      </div>
+      <div className="flex justify-between text-sm text-gray-600">
+        <span>Menor nota:</span>
+        <span className="font-bold text-red-600">{estadisticasMateria.peor_nota.toFixed(2)}</span>
+      </div>
+    </CardContent>
+  </Card>
+</div>
 
-            <Card className="bg-zinc-100 border border-zinc-300">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-black text-lg">Aprobados</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <p className="text-4xl font-bold text-green-600">{estadisticasMateria.aprobados}</p>
-                <Progress value={estadisticasMateria.porcentaje_aprobacion} className="h-2" />
-                <p className="text-sm text-gray-600">
-                  {estadisticasMateria.porcentaje_aprobacion}% de aprobación
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-zinc-100 border border-zinc-300">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-black text-lg">Mejores notas</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-1">
-                <div className="flex justify-between text-black">
-                  <span>Mayor:</span>
-                  <span className="font-bold text-green-600">{estadisticasMateria.mejor_nota.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-black">
-                  <span>Menor:</span>
-                  <span className="font-bold text-red-600">{estadisticasMateria.peor_nota.toFixed(2)}</span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
 
           {/* Dimensiones */}
           <div>
@@ -985,50 +974,52 @@ const Notas: React.FC = () => {
         <div className="space-y-8">
           <div>
             <h3 className="text-lg font-semibold mb-4 text-black">Resumen del curso</h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Card className="bg-zinc-100 text-black">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">Promedio General</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold text-academic-blue">
-                    {reporteTrimestral.estadisticas_curso.promedio_general.toFixed(2)}
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="bg-zinc-100 text-black">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">Total Estudiantes</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">{reporteTrimestral.total_estudiantes}</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-zinc-100 text-black">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">Materias Aprobadas</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <p className="text-4xl font-bold text-green-600">
-                    {reporteTrimestral.estadisticas_curso.materias_aprobadas} / {reporteTrimestral.estadisticas_curso.total_materias}
-                  </p>
-                  <Progress value={reporteTrimestral.estadisticas_curso.porcentaje_aprobacion} className="h-2" />
-                  <p className="text-sm text-muted-foreground">
-                    {reporteTrimestral.estadisticas_curso.porcentaje_aprobacion.toFixed(2)}% de aprobación
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="bg-zinc-100 text-black">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">Materias Reprobadas</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold text-red-600">
-                    {reporteTrimestral.estadisticas_curso.materias_reprobadas}
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <Card className="bg-white border-l-4 border-blue-500 shadow-md">
+    <CardHeader className="pb-2">
+      <CardTitle className="text-gray-800 text-xl font-semibold">Promedio & Estudiantes</CardTitle>
+    </CardHeader>
+    <CardContent className="grid grid-cols-2 gap-4 items-center">
+      <div className="text-center">
+        <p className="text-sm text-gray-500">Promedio General</p>
+        <p className="text-3xl font-bold text-academic-blue">
+          {reporteTrimestral.estadisticas_curso.promedio_general.toFixed(2)}
+        </p>
+      </div>
+      <div className="text-center">
+        <p className="text-sm text-gray-500">Total Estudiantes</p>
+        <p className="text-3xl font-bold text-black">
+          {reporteTrimestral.total_estudiantes}
+        </p>
+      </div>
+    </CardContent>
+  </Card>
+
+  <Card className="bg-white border-l-4 border-green-500 shadow-md">
+    <CardHeader className="pb-2">
+      <CardTitle className="text-gray-800 text-xl font-semibold">Aprobación & Reprobación</CardTitle>
+    </CardHeader>
+    <CardContent className="space-y-4">
+      <div className="text-center">
+        <p className="text-sm text-gray-500">Materias Aprobadas</p>
+        <p className="text-2xl font-bold text-green-600">
+          {reporteTrimestral.estadisticas_curso.materias_aprobadas} / {reporteTrimestral.estadisticas_curso.total_materias}
+        </p>
+        <Progress value={reporteTrimestral.estadisticas_curso.porcentaje_aprobacion} className="h-2 mt-1" />
+        <p className="text-xs text-muted-foreground mt-1">
+          {reporteTrimestral.estadisticas_curso.porcentaje_aprobacion.toFixed(2)}% de aprobación
+        </p>
+      </div>
+      <div className="text-center">
+        <p className="text-sm text-gray-500">Materias Reprobadas</p>
+        <p className="text-3xl font-bold text-red-600">
+          {reporteTrimestral.estadisticas_curso.materias_reprobadas}
+        </p>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
           </div>
 
           <div>
